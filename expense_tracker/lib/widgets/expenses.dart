@@ -29,8 +29,11 @@ class _Expenses extends State<Expenses> {
     ),
   ];
 
+  var _chartExpanded = true;
+
   void _openAddExpenseDialog() {
     showModalBottomSheet(
+      useSafeArea: true,
       isScrollControlled: true,
       context: context,
       builder: (ctx) => NewExpense(
@@ -66,8 +69,16 @@ class _Expenses extends State<Expenses> {
     ));
   }
 
+  void expandChart() {
+    setState(() {
+      _chartExpanded = !_chartExpanded;
+    });
+  }
+
   @override
   Widget build(context) {
+    var appSize = MediaQuery.of(context).size;
+
     Widget mainContent = const Center(
       child: Text('No expenses found. Add some one!'),
     );
@@ -88,14 +99,31 @@ class _Expenses extends State<Expenses> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Chart(expenses: _registeredExpenses),
-          Expanded(
-            child: mainContent,
-          ),
-        ],
-      ),
+      body: appSize.width < 600
+          ? Column(
+              children: [
+                Chart(
+                  expenses: _registeredExpenses,
+                  expand: _chartExpanded,
+                  onExpandChanged: expandChart,
+                ),
+                Expanded(
+                  child: mainContent,
+                ),
+              ],
+            )
+          : Row(
+              children: [
+                Expanded(
+                    child: Chart(
+                        expenses: _registeredExpenses,
+                        expand: _chartExpanded,
+                        onExpandChanged: expandChart)),
+                Expanded(
+                  child: mainContent,
+                ),
+              ],
+            ),
     );
   }
 }

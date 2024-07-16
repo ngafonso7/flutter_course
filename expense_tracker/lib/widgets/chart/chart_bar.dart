@@ -4,9 +4,11 @@ class ChartBar extends StatelessWidget {
   const ChartBar({
     super.key,
     required this.fill,
+    required this.value,
   });
 
   final double fill;
+  final double value;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,20 @@ class ChartBar extends StatelessWidget {
               color: isDarkMode
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).colorScheme.primary.withOpacity(0.65),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '\$${value.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    color: isDarkMode
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSecondaryContainer,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
