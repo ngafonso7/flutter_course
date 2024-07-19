@@ -1,28 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/favorites_provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class MealDetailsScreen extends StatelessWidget {
+class MealDetailsScreen extends ConsumerWidget {
   const MealDetailsScreen({
     super.key,
     required this.meal,
-    required this.onToggleFavorite,
+    //required this.onToggleFavorite,
   });
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFavorite;
+  //final void Function(Meal meal) onToggleFavorite;
+
+  void showToggleMessage(BuildContext ctx, bool added) {
+    final mealName = meal.title.length > 30
+        ? '${meal.title.substring(0, 30)}...'
+        : meal.title;
+    ScaffoldMessenger.of(ctx).clearSnackBars();
+    ScaffoldMessenger.of(ctx).showSnackBar(
+      SnackBar(
+          content: Text(added
+              ? '$mealName marked as favorite!'
+              : '$mealName no longer a favorite.')),
+    );
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
           IconButton(
               onPressed: () {
-                onToggleFavorite(meal);
+                //onToggleFavorite(meal);
+
+                //Below ref.read(notifier) give access to all method from
+                // the notifier class from the Provider
+                // e.g.: toggleFavorite is implemented on Provider's notifier
+                final wasAdded = ref
+                    .read(favoriteMealsProvider.notifier)
+                    .toggleFavorite(meal);
+                showToggleMessage(context, wasAdded);
               },
-              icon: Icon(Icons.star))
+              icon: const Icon(Icons.star))
         ],
       ),
       body: SingleChildScrollView(
