@@ -6,21 +6,15 @@ enum FilterType {
 }
 
 class FilterInfo {
-  FilterInfo(
-      {required this.id,
-      required this.title,
-      required this.subtitle,
-      required this.type,
-      required this.checked});
+  FilterInfo({
+    required this.id,
+    required this.title,
+    required this.subtitle,
+    required this.type,
+  });
 
   final String id;
   final String title;
   final String subtitle;
   final FilterType type;
-
-  bool checked;
-
-  set filterChecked(bool check) {
-    checked = check;
-  }
 }

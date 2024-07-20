@@ -5,6 +5,7 @@ class FavoriteMealsNotifier extends StateNotifier<List<Meal>> {
   FavoriteMealsNotifier() : super([]);
 
   bool toggleFavorite(Meal meal) {
+    //print('FavoriteMealsNotifier.toggleFavorite');
     final isFavorite = state.contains(meal);
 
     if (isFavorite) {
