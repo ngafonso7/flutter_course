@@ -1,5 +1,7 @@
 import 'package:favorite_places/models/place.dart';
 import 'package:favorite_places/providers/places_provider.dart';
+import 'package:favorite_places/widgets/image_input.dart';
+import 'package:favorite_places/widgets/location_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,15 +14,19 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _formKey = GlobalKey<FormState>();
+  String _selectedImagePath = '';
 
   var _enteredTitle = '';
 
   void _addNewItem() {
     if (_formKey.currentState!.validate()) {
+      if (_selectedImagePath == '') {
+        return;
+      }
       _formKey.currentState!.save();
       ref
           .read(placesListProvider.notifier)
-          .addNewPlace(Place(title: _enteredTitle));
+          .addNewPlace(Place(_enteredTitle, _selectedImagePath));
       Navigator.of(context).pop();
     }
   }
@@ -54,6 +60,14 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                   },
                   onSaved: (newValue) => _enteredTitle = newValue!,
                 ),
+                const SizedBox(height: 10),
+                ImageInput(
+                  onPickImage: (path) {
+                    _selectedImagePath = path;
+                  },
+                ),
+                const SizedBox(height: 10),
+                const LocationInput(),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
                   onPressed: _addNewItem,
