@@ -15,18 +15,24 @@ class AddPlaceScreen extends ConsumerStatefulWidget {
 class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
   final _formKey = GlobalKey<FormState>();
   String _selectedImagePath = '';
+  PlaceLocation? _selectedLocation;
 
   var _enteredTitle = '';
 
   void _addNewItem() {
     if (_formKey.currentState!.validate()) {
-      if (_selectedImagePath == '') {
+      if (_selectedImagePath == '' || _selectedLocation == null) {
         return;
       }
       _formKey.currentState!.save();
-      ref
-          .read(placesListProvider.notifier)
-          .addNewPlace(Place(_enteredTitle, _selectedImagePath));
+      ref.read(placesListProvider.notifier).addNewPlace(
+            Place(
+              null,
+              _enteredTitle,
+              _selectedImagePath,
+              _selectedLocation!,
+            ),
+          );
       Navigator.of(context).pop();
     }
   }
@@ -67,7 +73,11 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                const LocationInput(),
+                LocationInput(
+                  onSelectedLocation: (location) {
+                    _selectedLocation = location;
+                  },
+                ),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
                   onPressed: _addNewItem,
