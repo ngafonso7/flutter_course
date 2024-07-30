@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:uuid/uuid.dart';
 
-final uuid = Uuid();
+const uuid = Uuid();
 
 class PlaceLocation {
   const PlaceLocation(
@@ -17,13 +17,13 @@ class Place {
   Place(
     this.title,
     this.imagePath,
-    //this.location,
+    this.location,
   ) : id = uuid.v4();
 
   final String id;
   final String title;
   final String imagePath;
-  //final PlaceLocation location;
+  final PlaceLocation location;
 
   File get imageFile {
     return File(imagePath);
