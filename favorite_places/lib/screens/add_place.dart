@@ -26,7 +26,13 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
       }
       _formKey.currentState!.save();
       ref.read(placesListProvider.notifier).addNewPlace(
-          Place(_enteredTitle, _selectedImagePath, _selectedLocation!));
+            Place(
+              null,
+              _enteredTitle,
+              _selectedImagePath,
+              _selectedLocation!,
+            ),
+          );
       Navigator.of(context).pop();
     }
   }
@@ -67,11 +73,7 @@ class _AddPlaceScreenState extends ConsumerState<AddPlaceScreen> {
                   },
                 ),
                 const SizedBox(height: 10),
-                LocationInput(
-                  onSelectLocation: (location) {
-                    _selectedLocation = location;
-                  },
-                ),
+                const LocationInput(),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
                   onPressed: _addNewItem,

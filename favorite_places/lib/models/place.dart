@@ -14,11 +14,23 @@ class PlaceLocation {
 }
 
 class Place {
+  Map<String, dynamic> get placeInformation {
+    return {
+      'id': id,
+      'title': title,
+      'image': imagePath,
+      'lat': location.latitude,
+      'lng': location.longitude,
+      'address': location.address
+    };
+  }
+
   Place(
+    id,
     this.title,
     this.imagePath,
     this.location,
-  ) : id = uuid.v4();
+  ) : id = id ?? uuid.v4();
 
   final String id;
   final String title;
