@@ -25,8 +25,8 @@ class _NewMessageState extends State<NewMessage> {
 
   @override
   void initState() {
-    getUserInfo();
     super.initState();
+    getUserInfo();
   }
 
   void getUserInfo() async {
@@ -47,13 +47,13 @@ class _NewMessageState extends State<NewMessage> {
     FocusScope.of(context).unfocus();
     _messageController.clear();
 
-    FirebaseFirestore.instance.collection('chat').add(
+    await FirebaseFirestore.instance.collection('chat').add(
       {
         'text': enteredMessage,
         'createdAt': Timestamp.now(),
         'userId': user.uid,
         'username': userData.data()!['username'],
-        'userIamge': userData.data()!['image_url'],
+        'userImage': userData.data()!['image_url'],
       },
     );
   }
